@@ -36,21 +36,21 @@ export function get<T extends Record<string, any>>(
   }, obj)
 }
 
-// export function flattenObjectKeys(
-//   obj: Record<string, any>,
-//   prefix = '',
-// ): string[] {
-//   return Object.keys(obj).reduce((acc: string[], key) => {
-//     const prefixedKey = prefix ? `${prefix}.${key}` : key
+export function flattenObjectKeys(
+  obj: Record<string, any>,
+  prefix = '',
+): string[] {
+  return Object.keys(obj).reduce((acc: string[], key) => {
+    const prefixedKey = prefix ? `${prefix}.${key}` : key
 
-//     // found nested object
-//     if (obj[key] !== null && typeof obj[key] === 'object') {
-//       acc.push(prefixedKey)
-//       // recursion
-//       return acc.concat(flattenObjectKeys(obj[key], prefixedKey))
-//     }
+    // found nested object
+    if (obj[key] !== null && typeof obj[key] === 'object') {
+      acc.push(prefixedKey)
+      // recursion
+      return acc.concat(flattenObjectKeys(obj[key], prefixedKey))
+    }
 
-//     // primitive
-//     return acc.concat(prefixedKey)
-//   }, [])
-// }
+    // primitive
+    return acc.concat(prefixedKey)
+  }, [])
+}

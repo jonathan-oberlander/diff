@@ -1,4 +1,4 @@
-# ts-disc
+# Some patterns I like
 
 To install dependencies:
 

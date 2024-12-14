@@ -1,37 +1,10 @@
 import { Emitter } from './lib/emitter'
 import { type NestedKeys, get, log } from './lib/helpers'
+import * as F from './lib/recursions'
 import { SimpleCache } from './lib/simpleCache'
 import { personEvents, transactionEvents } from './mocks'
 
-// type Events = {
-//   file_read: (file: string) => void
-//   found: (file: string, match: RegExp) => void
-//   error: (e: Error) => void
-// }
-
-// export const emitter = new Emitter<Events>()
-
-// const onFound: Events['found'] = (file, regex) =>
-//   console.log(`_found_ \nstring: ${file}\nregex: ${regex}\n`)
-
-// emitter.on('found', onFound)
-
-// emitter.emit('found', 'text coming from file A', /file/g)
-// emitter.emit('found', 'text coming from file B', /file/g)
-
-// emitter.off('found', onFound)
-
-// emitter.emit('found', 'text coming from file C', /file/g)
-
-// emitter.once('error', e => {
-//   console.error(e.message)
-//   process.exit()
-// })
-
-// emitter.emit('error', new Error('Boom 💣💣💣 !!!'))
-// emitter.emit('error', new Error('Boom 💣💣💣 !!!'))
-
-log('\nsrc/index.ts________________________________________')
+log('\ndiff________________________________________')
 
 type Diff<T> = {
   [K in keyof T]: {
@@ -135,3 +108,44 @@ const finalTransactionDiff = await replaceNotFound(transactionDiff)
 cache.debug()
 
 log(finalTransactionDiff)
+
+log('\nrecurse________________________________________')
+
+const recurse = F.reduce(
+  (acc, val) => acc + val,
+  0,
+  [1, 2, 3, 4, 5, 6, 7, 8, 9],
+)
+const mapper = F.map(n => n * n, [1, 2, 3, 4, 5, 6, 7, 8, 9])
+const filterer = F.filter(n => n <= 3, [1, 2, 3, 4, 5, 6, 7, 8, 9])
+
+log(recurse)
+log(mapper)
+log(filterer)
+
+log('\nemitter________________________________________')
+
+type Events = {
+  file_read: (file: string) => void
+  found: (file: string, match: RegExp) => void
+  error: (e: Error) => void
+}
+
+export const emitter = new Emitter<Events>()
+
+const onFound: Events['found'] = (file, regex) =>
+  console.log(`_found_ \nstring: ${file}\nregex: ${regex}\n`)
+
+emitter.on('found', onFound)
+
+emitter.emit('found', 'text coming from file A', /file/g)
+emitter.emit('found', 'text coming from file B', /file/g)
+
+emitter.off('found', onFound)
+
+emitter.emit('found', 'text coming from file C', /file/g)
+
+emitter.once('error', e => {
+  console.error(e.message)
+  process.exit()
+})
